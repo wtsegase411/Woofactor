@@ -28,7 +28,7 @@ class Line:
         self.identifier = i
         self.chordProgression = c
 
-
+# Example: 
 line1 = Line("Line1", ['Vim', 'IV', 'I', 'V'])
 line2 = Line("Line2", ['IIm', 'IIm', 'IV', 'V'])
 line3 = Line("Line3", ['I', 'I', 'VIm', 'VIm', 'IIm', 'IIm', 'V', 'V'])
