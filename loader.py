@@ -1,5 +1,6 @@
 import csv
 
+
 def main():
     with open('Digital Representation.csv', newline='') as file:
         reader = csv.reader(file)
@@ -13,6 +14,3 @@ def main():
                     break
             info.append(row)
     return info
-
-if __name__ == '__main__':
-    main()
