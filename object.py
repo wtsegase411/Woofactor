@@ -61,12 +61,4 @@ def main():
             else:
                 forms.append(Progressions.Form(progs[l][0], progs[l][-1]))
         output.append(Progressions.Song(name, forms))
-    for song in output:
-        print(song.name)
-        for form in song.forms:
-            print(form.tag)
-            for y in form.chordProgressions:
-                print(y.key)
-                for q in y.line:
-                    print(q.chords)
     return output
