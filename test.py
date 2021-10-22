@@ -2,7 +2,7 @@ import algorithm1
 
 
 def main():
-    progs = ["I", "Im", "II", "IIm", "III", "IIIm", "IV", "IVm", "V", "Vm", "VI", "VIm", "VII", "VIIm", ]
+    progs = ["I", "Im", "I7", "II", "IIm", "II7", "III", "IIIm", "III7", "IV", "IVm", "IV7", "V", "Vm", "V7",  "VI", "VIm", "VI7", "VII", "VIIm", "VII7"]
 
     alg1Out = []
     alg2Out = []
