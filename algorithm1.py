@@ -1,9 +1,9 @@
-import object
+import getLines
 
 
 def possibleProgressionsLast1(inProg):
     # List of each unique line from the dataset
-    lines = getLines()
+    lines = getLines.main()
 
     # list of possible following progressions
     possibleFollow = []
@@ -22,31 +22,28 @@ def possibleProgressionsLast1(inProg):
     return None
 
 
-def getUniqueLines():
-    songList = object.main()
-    output = []  # each line from each song
+def possibleProgressionsLast2(inProg1, inProg2):
+    # List of each unique line from the dataset
+    lines = getLines.main()
 
-    for i in songList:
-        for j in i.forms:
-            for y in j.chordProgressions:
-                for q in y.line:
-                    if not (q in output):
-                        output.append(q)
+    # list of possible following progressions
+    possibleFollow = []
 
-    return output
+    for l in lines:
+        for c in range(len(l.chords)):
+            # If the progression from inProg is there and not at the end of a line add the following element to possibleFollow
+            if l.chords[c] == inProg1 and c < len(l.chords) - 2 and l.chords[c + 1] == inProg2:
+                possibleFollow.append(l.chords[c + 2])
 
-def getLines():
-    songList = object.main()
-    output = []  # each line from each song
+    print("Possible followings for " + inProg1 + " " + inProg2)
 
-    for i in songList:
-        for j in i.forms:
-            for y in j.chordProgressions:
-                for q in y.line:
-                    output.append(q)
+    print("Found " + str(len(possibleFollow)) + " cases of " + inProg1 + " " + inProg2)
 
-    return output
+    for y in set(possibleFollow):
+        print(y + " " + str(round((possibleFollow.count(y) / len(possibleFollow) * 100), 2)) + "%")
+
+    return None
 
 
 if __name__ == '__main__':
-    possibleProgressionsLast1("V")
+    possibleProgressionsLast1("I")
