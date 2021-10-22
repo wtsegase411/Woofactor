@@ -18,6 +18,11 @@ def main():
         if len(alg1Out[x]) > 0:
             print("Possibilities for " + str(progs[x]) + "  " + str(alg1Out[x]))
 
+    for x in range(len(alg2Out)):
+        if len(alg2Out[x]) > 0:
+            print("Possibilities for " + str(progs[int(x / len(progs))]) + "  " + str(progs[x % len(progs)]) + "  " + str(alg2Out[x]))
+
+
     return None
 
 
