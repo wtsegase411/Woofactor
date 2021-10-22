@@ -7,6 +7,7 @@ def possibleProgressionsLast1(inProg):
 
     # list of possible following progressions
     possibleFollow = []
+    output = []
 
     for l in lines:
         for c in range(len(l.chords)):
@@ -14,12 +15,13 @@ def possibleProgressionsLast1(inProg):
             if l.chords[c] == inProg and c != len(l.chords) - 1:
                 possibleFollow.append(l.chords[c + 1])
 
-    print("Possible followings for " + inProg)
+    #print("Possible followings for " + inProg)
 
     for y in set(possibleFollow):
-        print(y + " " + str(round((possibleFollow.count(y) / len(possibleFollow) * 100), 2)) + "%")
+        #print(y + " " + str(round((possibleFollow.count(y) / len(possibleFollow) * 100), 2)) + "%")
+        output.append(str(y) + " " + str(round((possibleFollow.count(y) / len(possibleFollow) * 100), 2)) + "%")
 
-    return None
+    return output
 
 
 def possibleProgressionsLast2(inProg1, inProg2):
@@ -28,6 +30,7 @@ def possibleProgressionsLast2(inProg1, inProg2):
 
     # list of possible following progressions
     possibleFollow = []
+    output = []
 
     for l in lines:
         for c in range(len(l.chords)):
@@ -35,15 +38,12 @@ def possibleProgressionsLast2(inProg1, inProg2):
             if l.chords[c] == inProg1 and c < len(l.chords) - 2 and l.chords[c + 1] == inProg2:
                 possibleFollow.append(l.chords[c + 2])
 
-    print("Possible followings for " + inProg1 + " " + inProg2)
+    #print("Possible followings for " + inProg1 + " " + inProg2)
 
-    print("Found " + str(len(possibleFollow)) + " cases of " + inProg1 + " " + inProg2)
+    #print("Found " + str(len(possibleFollow)) + " cases of " + inProg1 + " " + inProg2)
 
     for y in set(possibleFollow):
-        print(y + " " + str(round((possibleFollow.count(y) / len(possibleFollow) * 100), 2)) + "%")
+        #print(y + " " + str(round((possibleFollow.count(y) / len(possibleFollow) * 100), 2)) + "%")
+        output.append(y + " " + str(round((possibleFollow.count(y) / len(possibleFollow) * 100), 2)) + "%")
 
-    return None
-
-
-if __name__ == '__main__':
-    possibleProgressionsLast1("I")
+    return output
