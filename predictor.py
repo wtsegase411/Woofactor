@@ -44,26 +44,12 @@ def predictior(progsIn):
     else:
         workingProgs = progsIn
 
-    # If the user doesn't input a progression
-    if progsIn[0] == '':
-        progsIn.append(random.choices(progs, weights=alg0Out, k=1)[0])
-
-    # If the user only inputs 1 progression
-    elif len(progsIn) == 1 and sum(alg1Out[progs.index(progsIn[0])]) != 0:
-        weights0 = np.array(alg0Out) * prob0Weight
-        weights1 = np.array(alg1Out[progs.index(progsIn[0])]) * prob1Weight
-
-        # for x in range(len((weights0 * weights1))):
-        #     if (weights0 * weights1)[x] != 0:
-        #         print(str(progs[x]) + " " + str(normalize.main((weights0 * weights1))[x]))
-
-        progsIn.append(random.choices(progs, weights=weights0 + weights1, k=1)[0])
-
-    # If the user inputs 2 progressions
-    elif len(workingProgs) == 2 and sum(alg2Out[progs.index(workingProgs[0]) * len(progs) + progs.index(workingProgs[1])]) != 0:
+    # If the user inputs 2 progressions we can see in the data
+    if len(workingProgs) == 2 and sum(alg2Out[progs.index(workingProgs[0]) * len(progs) + progs.index(workingProgs[1])]) != 0:
         weights0 = np.array(alg0Out) * prob0Weight
         weights1 = np.array(alg1Out[progs.index(workingProgs[0])]) * prob1Weight
-        weights2 = np.array(alg2Out[progs.index(workingProgs[0]) * len(progs) + progs.index(workingProgs[1])]) * prob2Weight
+        weights2 = np.array(
+            alg2Out[progs.index(workingProgs[0]) * len(progs) + progs.index(workingProgs[1])]) * prob2Weight
 
         newWeights = probability3(weights0, weights1, weights2)
 
@@ -74,8 +60,20 @@ def predictior(progsIn):
 
         progsIn.append(random.choices(progs, weights=newWeights, k=1)[0])
 
+    # If the user only inputs 1 progression
+    elif len(progsIn) >= 1 and sum(alg1Out[progs.index(progsIn[0])]) != 0:
+        weights0 = np.array(alg0Out) * prob0Weight
+        weights1 = np.array(alg1Out[progs.index(progsIn[0])]) * prob1Weight
+
+        # for x in range(len((weights0 * weights1))):
+        #     if (weights0 * weights1)[x] != 0:
+        #         print(str(progs[x]) + " " + str(normalize.main((weights0 * weights1))[x]))
+
+        progsIn.append(random.choices(progs, weights=weights0 + weights1, k=1)[0])
+
+    # If the user doesn't input a progression
     else:
-        print("We don't have data for that progression")
+        progsIn.append(random.choices(progs, weights=alg0Out, k=1)[0])
 
     for x in progsIn:
         print(x)
@@ -87,8 +85,7 @@ def probability3(P1, P2, P3):
     return P1+P2+P3-(P1*P2)-(P1*P3)-(P2*P3)+(P1*P2*P3)
 
 def main():
-    # Get the user inputed list of progressons sepera
-    # ted by commaas
+    # Get the user inputed list of progressons seperated by commas
     progsIn = input("Comma separated string of progressions: ")
 
     # remove spaces and turn comma seperated string into list
