@@ -1,7 +1,7 @@
 import csv
 
 
-def test():
+def main():
     with open('Digital Representation.csv', newline='') as file:
         reader = csv.reader(file)
         info = []
@@ -15,6 +15,5 @@ def test():
                 elif row[i] == '':
                     row = row[:i]
                 i += 1
-
             info.append(row)
     return info
