@@ -1,11 +1,12 @@
 import algorithm1
+import player
 import normalize
 import random
 import numpy as np
 
 
 # test
-def predictior(progsIn):
+def predictior(progsIn, playing):
     # A list of all the possible prorgessions
     progs = ["I", "Im", "I7", "II", "IIm", "II7", "III", "IIIm", "III7", "IV", "IVm", "IV7", "V", "Vm", "V7", "VI",
              "VIm", "VI7", "VII", "VIIm", "VII7"]
@@ -68,6 +69,8 @@ def predictior(progsIn):
 
     for x in progsIn:
         print(x)
+        if playing == "Y":
+           player.translate(x, "C", 0.5)
 
     return progsIn
 
@@ -77,13 +80,16 @@ def probability3(P1, P2, P3):
 
 def main():
     # Get the user inputed list of progressons seperated by commas
+
+    playing = input("Play music? (Y/N)")
+
     progsIn = input("Comma separated string of progressions: ")
 
     # remove spaces and turn comma seperated string into list
     progsIn = progsIn.replace(" ", "").split(",")
 
     while (True):
-        progsIn = predictior(progsIn)
+        progsIn = predictior(progsIn, playing)
         input("Enter to continue.")
 
     return None
