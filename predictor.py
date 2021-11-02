@@ -74,9 +74,6 @@ def predictior(progsIn, playing):
 
     return progsIn
 
-def probability3(P1, P2, P3):
-
-    return P1+P2+P3-(P1*P2)-(P1*P3)-(P2*P3)+(P1*P2*P3)
 
 def main():
     # Get the user inputed list of progressons seperated by commas
