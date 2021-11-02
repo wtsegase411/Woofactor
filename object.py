@@ -3,7 +3,7 @@ import Progressions
 
 
 def main():
-    songList = loader.main()
+    songList = loader.test()
     output = [] #list of Song objects
     for i in songList: #iterates through file by row
         name = ""

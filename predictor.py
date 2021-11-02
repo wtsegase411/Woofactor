@@ -2,7 +2,6 @@ import algorithm1
 import player
 import normalize
 import random
-import numpy as np
 
 
 # test
@@ -43,7 +42,7 @@ def predictior(progsIn, playing):
     # If the user inputs 2 progressions we can see in the data
     if len(workingProgs) == 2 and sum(alg2Out[progs.index(workingProgs[0]) * len(progs) + progs.index(workingProgs[1])]) != 0:
 
-        weights2 = np.array(alg2Out[progs.index(workingProgs[0]) * len(progs) + progs.index(workingProgs[1])])
+        weights2 = alg2Out[progs.index(workingProgs[0]) * len(progs) + progs.index(workingProgs[1])]
 
         # Print probabilities for testing
         # for x in range(len(newWeights)):
@@ -55,7 +54,7 @@ def predictior(progsIn, playing):
     # If the user only inputs 1 progression
     elif len(progsIn) >= 1 and sum(alg1Out[progs.index(progsIn[0])]) != 0:
 
-        weights1 = np.array(alg1Out[progs.index(progsIn[0])])
+        weights1 = alg1Out[progs.index(progsIn[0])]
 
         # for x in range(len((weights0 * weights1))):
         #     if (weights0 * weights1)[x] != 0:
@@ -80,7 +79,7 @@ def main():
     # remove spaces and turn comma seperated string into list
     progsIn = progsIn.replace(" ", "").split(",")
 
-    while (len(progsIn) < 8):
+    while (len(progsIn) < 10):
         progsIn = predictior(progsIn, playing)
     for x in progsIn:
         print(x)
