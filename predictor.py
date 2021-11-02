@@ -67,11 +67,6 @@ def predictior(progsIn, playing):
     else:
         progsIn.append(random.choices(progs, weights=alg0Out, k=1)[0])
 
-    for x in progsIn:
-        print(x)
-        if playing == "Y":
-           player.translate(x, "C", 0.5)
-
     return progsIn
 
 
@@ -85,12 +80,14 @@ def main():
     # remove spaces and turn comma seperated string into list
     progsIn = progsIn.replace(" ", "").split(",")
 
-    while (True):
+    while (len(progsIn) < 8):
         progsIn = predictior(progsIn, playing)
-        input("Enter to continue.")
+    for x in progsIn:
+        print(x)
+        if playing == "Y":
+            player.translate(x, "C", 0.5)
 
     return None
 
 if __name__ == '__main__':
-    while True:
-        main()
+    main()
