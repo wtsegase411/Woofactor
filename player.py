@@ -10,9 +10,10 @@ def translate(input, key, sleeptime):
         fluidsynth.play_NoteContainer(NoteContainer(chords.I(key)))
         time.sleep(sleeptime)
 
-    elif input == "Im":
-        fluidsynth.play_NoteContainer(NoteContainer(chords.i(key)))
-        time.sleep(sleeptime)
+    # Not in Mingus??
+    # elif input == "Im":
+    #     fluidsynth.play_NoteContainer(NoteContainer(chords.i(key)))
+    #     time.sleep(sleeptime)
 
     elif input == "I7":
         fluidsynth.play_NoteContainer(NoteContainer(chords.I7(key)))
@@ -46,9 +47,10 @@ def translate(input, key, sleeptime):
         fluidsynth.play_NoteContainer(NoteContainer(chords.IV(key)))
         time.sleep(sleeptime)
 
-    elif input == "IVm":
-        fluidsynth.play_NoteContainer(NoteContainer(chords.iv(key)))
-        time.sleep(sleeptime)
+    # Not in Mingus??
+    # elif input == "IVm":
+    #     fluidsynth.play_NoteContainer(NoteContainer(chords.iv(key)))
+    #     time.sleep(sleeptime)
 
     elif input == "IV7":
         fluidsynth.play_NoteContainer(NoteContainer(chords.IV7(key)))
@@ -58,9 +60,10 @@ def translate(input, key, sleeptime):
         fluidsynth.play_NoteContainer(NoteContainer(chords.V(key)))
         time.sleep(sleeptime)
 
-    elif input == "Vm":
-        fluidsynth.play_NoteContainer(NoteContainer(chords.v(key)))
-        time.sleep(sleeptime)
+    # Not in Mingus??
+    # elif input == "Vm":
+    #     fluidsynth.play_NoteContainer(NoteContainer(chords.v(key)))
+    #     time.sleep(sleeptime)
 
     elif input == "V7":
         fluidsynth.play_NoteContainer(NoteContainer(chords.V7(key)))
@@ -89,4 +92,8 @@ def translate(input, key, sleeptime):
     elif input == "VII7":
         fluidsynth.play_NoteContainer(NoteContainer(chords.VII7(key)))
         time.sleep(sleeptime)
+
+    else:
+        print("Can't play " + input)
+
     return None

@@ -76,25 +76,33 @@ def baysianModel(progs):
 
 def main():
 
+    progLength = 10
+    playSPeed = 120/60/4
+    beats = 3
     progs = ["I", "Im", "I7", "II", "IIm", "II7", "III", "IIIm", "III7", "IV", "IVm", "IV7", "V", "Vm", "V7", "VI",
              "VIm", "VI7", "VII", "VIIm", "VII7"]
 
-    # Get the user inputed list of progressons seperated by commas
     playing = input("Play music? (Y/N)")
 
+    # Get the user inputed list of progressons seperated by commas
     progsIn = input("Comma separated string of progressions: ")
 
+    # Get the baysianModel from the data to reuse over multiple iterations of prediction
     modelOut = baysianModel(progs)
 
-    # remove spaces and turn comma seperated string into list
+    # Remove spaces and turn comma seperated string into list
     progsIn = progsIn.replace(" ", "").split(",")
 
-    while (len(progsIn) < 10):
+    # Generate more progressions until the length is as long as the progLength
+    while (len(progsIn) < progLength):
         progsIn = predictior(progsIn, progs, modelOut[0], modelOut[1], modelOut[2])
+
+    # Print out each progression and play if the user said to
     for x in progsIn:
         print(x)
         if playing == "Y":
-            player.translate(x, "C", 0.5)
+            for y in range(beats):
+                player.translate(x, "G", playSPeed)
 
     return None
 
