@@ -8,7 +8,6 @@ import random
 def predictior(progsIn, progs, alg0Out, alg1Out, alg2Out):
     # A list of all the possible prorgessions
 
-
     #Print out the probabilities for testing
     # print(alg0Out)
     #
