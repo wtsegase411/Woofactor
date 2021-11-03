@@ -10,7 +10,7 @@ def possibleFirstChord():
 
     for l in lines:
         # Adds chords that are present in a beginning of a line
-            possibleChord.append(l.chords[0])
+        possibleChord.append(l.chords[0])
 
     for y in set(possibleChord):
         output.append(str(y) + " " + str(round((possibleChord.count(y) / len(possibleChord) * 100), 2)) + "%")
@@ -40,9 +40,9 @@ def possibleProgressionsLast1(progs, inProg):
 
     for l in lines:
         for c in range(len(l.chords)):
-          # If the progression from inProg is there and not at the end of a line add the following element to possibleFollow
+            # If the progression from inProg is there and not at the end of a line add the following element to possibleFollow
             if l.chords[c] == inProg and c != len(l.chords) - 1:
-               progCount[progs.index(l.chords[c + 1])] += 1
+                progCount[progs.index(l.chords[c + 1])] += 1
 
     return progCount
 
