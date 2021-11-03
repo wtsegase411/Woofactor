@@ -5,21 +5,9 @@ import random
 
 
 # test
-def predictior(progsIn, playing):
+def predictior(progsIn, progs, alg0Out, alg1Out, alg2Out):
     # A list of all the possible prorgessions
-    progs = ["I", "Im", "I7", "II", "IIm", "II7", "III", "IIIm", "III7", "IV", "IVm", "IV7", "V", "Vm", "V7", "VI",
-             "VIm", "VI7", "VII", "VIIm", "VII7"]
 
-    alg0Out = normalize.main(algorithm1.possibleProgressions(progs))
-    alg1Out = []
-    alg2Out = []
-
-    for part in progs:
-        alg1Out.append(normalize.main(algorithm1.possibleProgressionsLast1(progs, part)))
-
-    for part1 in progs:
-        for part2 in progs:
-            alg2Out.append(normalize.main(algorithm1.possibleProgressionsLast2(progs, part1, part2)))
 
     #Print out the probabilities for testing
     # print(alg0Out)
@@ -68,19 +56,37 @@ def predictior(progsIn, playing):
 
     return progsIn
 
+def baysianModel(progs):
+    alg0Out = normalize.main(algorithm1.possibleProgressions(progs))
+    alg1Out = []
+    alg2Out = []
+
+    for part in progs:
+        alg1Out.append(normalize.main(algorithm1.possibleProgressionsLast1(progs, part)))
+
+    for part1 in progs:
+        for part2 in progs:
+            alg2Out.append(normalize.main(algorithm1.possibleProgressionsLast2(progs, part1, part2)))
+
+    return [alg0Out, alg1Out, alg2Out]
 
 def main():
-    # Get the user inputed list of progressons seperated by commas
 
+    progs = ["I", "Im", "I7", "II", "IIm", "II7", "III", "IIIm", "III7", "IV", "IVm", "IV7", "V", "Vm", "V7", "VI",
+             "VIm", "VI7", "VII", "VIIm", "VII7"]
+
+    # Get the user inputed list of progressons seperated by commas
     playing = input("Play music? (Y/N)")
 
     progsIn = input("Comma separated string of progressions: ")
+
+    modelOut = baysianModel(progs)
 
     # remove spaces and turn comma seperated string into list
     progsIn = progsIn.replace(" ", "").split(",")
 
     while (len(progsIn) < 10):
-        progsIn = predictior(progsIn, playing)
+        progsIn = predictior(progsIn, progs, modelOut[0], modelOut[1], modelOut[2])
     for x in progsIn:
         print(x)
         if playing == "Y":
