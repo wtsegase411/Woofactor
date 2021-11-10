@@ -1,4 +1,5 @@
 import algorithm1
+import getLines
 import player
 import normalize
 import random
@@ -7,17 +8,6 @@ import random
 # test
 def predictior(progsIn, progs, alg0Out, alg1Out, alg2Out):
     # A list of all the possible prorgessions
-
-    #Print out the probabilities for testing
-    # print(alg0Out)
-    #
-    # for x in range(len(alg1Out)):
-    #     if sum(alg1Out[x]) > 0:
-    #         print("Possibilities after " + str(progs[x]) + "  " + str(alg1Out[x]))
-    #
-    # for x in range(len(alg2Out)):
-    #     if sum(alg2Out[x]) > 0:
-    #         print("Possibilities after " + str(progs[int(x / len(progs))]) + "  " + str(progs[x % len(progs)]) + "  " + str(alg2Out[x]))
 
     # If the user gives more than 2 elements remove all but the last two
     if (len(progsIn)) > 2:
@@ -77,14 +67,21 @@ def main():
 
     progLength = 10
     playSPeed = 120/60/4
-    beats = 3
-    progs = ["I", "Im", "I7", "II", "IIm", "II7", "III", "IIIm", "III7", "IV", "IVm", "IV7", "V", "Vm", "V7", "VI",
-             "VIm", "VI7", "VII", "VIIm", "VII7"]
+    defaultBeats = 4
 
     playing = input("Play music? (Y/N)")
 
     # Get the user inputed list of progressons seperated by commas
     progsIn = input("Comma separated string of progressions: ")
+
+    lines = getLines.main()
+    progs = []
+
+    for l in lines:
+        for c in l.chords:
+            if c not in progs:
+                progs.append(c)
+                print(c)
 
     # Get the baysianModel from the data to reuse over multiple iterations of prediction
     modelOut = baysianModel(progs)
@@ -100,7 +97,13 @@ def main():
     for x in progsIn:
         print(x)
         if playing == "Y":
-            for y in range(beats):
+            if True in [char.isdigit() for char in x]:
+                currentBeat = int(x[-1])
+                x = x[:-1]
+            else:
+                currentBeat = defaultBeats
+
+            for y in range(currentBeat):
                 player.translate(x, "G", playSPeed)
 
     return None
