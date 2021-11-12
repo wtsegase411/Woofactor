@@ -9,7 +9,7 @@ def main():
             i = 0
             while i < len(row):
                 if ' ' in row[i] and i != 0:
-                    row[i] = ''
+                    row[i] = row[i].replace(" ", "")
                 elif '\r\n' in row[i]:
                     row[i] = row[i][:-2]
                 elif row[i] == '':
