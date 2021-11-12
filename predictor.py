@@ -27,7 +27,7 @@ def predictior(progsIn, progs, alg0Out, alg1Out, alg2Out):
         #         print(str(progs[x]) + " " + str(normalize.main(newWeights)[x]))
 
         progsIn.append(random.choices(progs, weights=weights2, k=1)[0])
-        print(str(progsIn[len(progsIn)-1]) + " " + str(normalize.main(weights2)[progs.index(progsIn[len(progsIn)-1])]))
+        #print(str(progsIn[len(progsIn)-1]) + " " + str(normalize.main(weights2)[progs.index(progsIn[len(progsIn)-1])]))
 
     # If the user only inputs 1 progression
     elif len(progsIn) >= 1 and sum(alg1Out[progs.index(progsIn[0])]) != 0:
@@ -39,13 +39,13 @@ def predictior(progsIn, progs, alg0Out, alg1Out, alg2Out):
         #         print(str(progs[x]) + " " + str(normalize.main((weights0 * weights1))[x]))
 
         progsIn.append(random.choices(progs, weights=weights1, k=1)[0])
-        print(str(progsIn[len(progsIn)-1]) + " " + str(normalize.main(weights1)[progs.index(progsIn[len(progsIn)-1])]))
+        #print(str(progsIn[len(progsIn)-1]) + " " + str(normalize.main(weights1)[progs.index(progsIn[len(progsIn)-1])]))
 
 
     # If the user doesn't input a progression
     else:
         progsIn.append(random.choices(progs, weights=alg0Out, k=1)[0])
-        print(str(progsIn[len(progsIn)-1]) + " " + str(normalize.main(alg0Out)[progs.index(progsIn[len(progsIn)-1])]))
+        #print(str(progsIn[len(progsIn)-1]) + " " + str(normalize.main(alg0Out)[progs.index(progsIn[len(progsIn)-1])]))
 
     return progsIn
 
@@ -81,7 +81,7 @@ def main():
         for c in l.chords:
             if c not in progs:
                 progs.append(c)
-                print(c)
+                #print(c)
 
     # Get the baysianModel from the data to reuse over multiple iterations of prediction
     modelOut = baysianModel(progs)
@@ -105,6 +105,10 @@ def main():
 
             for y in range(currentBeat):
                 player.translate(x, "G", playSPeed)
+    #
+    # print(progs)
+    # for p in range(len(progs)):
+    #     print(progs[p] + str(modelOut[1][p]))
 
     return None
 
