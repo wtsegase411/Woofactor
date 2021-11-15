@@ -3,6 +3,15 @@ import Progressions
 
 
 def main():
+    '''
+    Returns list of Song Objects from nested list output by loader.py
+    
+        Parameters:
+            None
+            
+        Returns:
+            output (list): List of Song Objects (See Reference Manual for details)
+    '''
     songList = loader.main()
     output = [] #list of Song objects
     for i in songList: #iterates through file by row
