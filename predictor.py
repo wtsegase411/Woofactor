@@ -3,6 +3,7 @@ import getLines
 import player
 import normalize
 import random
+import two_dimensional_visual
 
 
 # test
@@ -106,10 +107,11 @@ def main():
             for y in range(currentBeat):
                 player.translate(x, "G", playSPeed)
     #
-    # print(progs)
-    # for p in range(len(progs)):
-    #     print(progs[p] + str(modelOut[1][p]))
+    print(progs)
+    for p in range(len(progs)):
+        print(progs[p] + str(modelOut[1][p]))
 
+    two_dimensional_visual.two_d_visualize(modelOut[1], progs, "P(B|A)")
     return None
 
 if __name__ == '__main__':
