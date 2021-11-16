@@ -1,15 +1,14 @@
 import matplotlib.pyplot as plt
 
-"""
-https://matplotlib.org/3.1.1/gallery/ticks_and_spines/ticklabels_rotation.html
-https://matplotlib.org/stable/api/pyplot_summary.html#matplotlib.pyplot.plotting
-"""
-
 def two_d_visualize(progressions, progs, title):
     """
-    :param progressions: a list of progressions
-    :param progs:
-    :param title:
+    References:
+    https://matplotlib.org/3.1.1/gallery/ticks_and_spines/ticklabels_rotation.html
+    https://matplotlib.org/stable/api/pyplot_summary.html#matplotlib.pyplot.plotting
+
+    :param progressions: a two-dimensional array with float values that represent
+    :param progs: a list of progressions in the data in a string format (e.g.) ['I', 'IV', 'V'])
+    :param title: a string represents the title of the plot
     :return:
     """
 
