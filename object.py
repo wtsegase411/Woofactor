@@ -3,6 +3,15 @@ import Progressions
 
 
 def main():
+    '''
+    Returns list of Song Objects from nested list output by loader.py
+    
+        Parameters:
+            None
+            
+        Returns:
+            output (list): List of Song Objects (See Reference Manual for details)
+    '''
     songList = loader.main()
     output = [] #list of Song objects
     for i in songList: #iterates through file by row
@@ -16,7 +25,7 @@ def main():
             if j == 0:
                 name = i[j]
                 j += 1
-            elif "line" in i[j] and len(i[j+1]) <= 4: #Marking start of line
+            elif "line" in i[j] and len(i[j+1]) <= 5: #Marking start of line
                 x = j
                 j += 1
                 while j < i.index("intro"):
@@ -27,12 +36,12 @@ def main():
                         x = j
                         j += 1
                 lines.append(i[x:j])
-            elif len(i[j]) >= 4 and "line" not in i[j] and ("II" or "V") not in i[j]: #Check for start of progression
+            elif len(i[j]) >= 5 and "line" not in i[j] and ("II" or "V") not in i[j]: #Check for start of progression
                 z = j
                 j += 1
                 success = False
                 while j < (len(i)-2):
-                    if len(i[j+1]) >= 4 and "line" not in i[j+1] and ("II" or "V") not in i[j+1]: #Check for end of progression
+                    if len(i[j+1]) >= 5 and "line" not in i[j+1] and ("II" or "V") not in i[j+1]: #Check for end of progression
                         progs.append(i[z:j+1])
                         success = True
                         break

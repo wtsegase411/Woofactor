@@ -2,6 +2,15 @@ import csv
 
 
 def main():
+    '''
+    Returns nested list of rows from 'Digital Representation.csv' and each sublist is processed so blank cells and cells with irrelevent values are removed.
+    
+        Parameters:
+            None
+            
+        Returns:
+            info (list): nested list containing each row in 'Digial Representation.csv' as a sublist
+    '''
     with open('Digital Representation.csv', newline='') as file:
         reader = csv.reader(file)
         info = []
