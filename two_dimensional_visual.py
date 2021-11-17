@@ -22,10 +22,11 @@ def two_d_visualize(progressions, progs, title):
         axis = plt.axes()
         # X-axis ticks & labels on the top instead of on the bottom (default)
         axis.tick_params(axis='x', labelbottom=False, bottom = False, labeltop=True, top=True)
-        plt.xticks(ticks, progs, rotation=45)    # labeling x-axis with each progression
+        plt.xticks(ticks, progs, rotation=60)    # labeling x-axis with each progression
+        plt.xticks(fontsize=9)
         plt.yticks(ticks, progs)    # labeling y-axis with each progression
-        plt.imshow(progressions)
         plt.title(str(title))
         plt.colorbar()
+        plt.subplots_adjust(top=0.8)    # space above the title
         plt.show()
 
