@@ -10,6 +10,12 @@ import two_dimensional_visual
 def predictior(progsIn, progs, alg0Out, alg1Out, alg2Out):
     # A list of all the possible prorgessions
 
+    # # If the user didn't input anything clear progsIn
+    # if progsIn[0] == '':
+    #     progsIn = []
+
+    currentOut = []
+
     # If the user gives more than 2 elements remove all but the last two
     if (len(progsIn)) > 2:
         workingProgs = progsIn[-2:]
@@ -22,33 +28,38 @@ def predictior(progsIn, progs, alg0Out, alg1Out, alg2Out):
 
         weights2 = alg2Out[progs.index(workingProgs[0]) * len(progs) + progs.index(workingProgs[1])]
 
-        # Print probabilities for testing
-        # for x in range(len(newWeights)):
-        #     if normalize.main(newWeights)[x] != 0:
-        #         print(str(progs[x]) + " " + str(normalize.main(newWeights)[x]))
-
-        progsIn.append(random.choices(progs, weights=weights2, k=1)[0])
-        #print(str(progsIn[len(progsIn)-1]) + " " + str(normalize.main(weights2)[progs.index(progsIn[len(progsIn)-1])]))
+        currentOut.append(random.choices(progs, weights=weights2, k=1)[0])
 
     # If the user only inputs 1 progression
     elif len(progsIn) >= 1 and sum(alg1Out[progs.index(progsIn[0])]) != 0:
 
         weights1 = alg1Out[progs.index(progsIn[0])]
 
-        # for x in range(len((weights0 * weights1))):
-        #     if (weights0 * weights1)[x] != 0:
-        #         print(str(progs[x]) + " " + str(normalize.main((weights0 * weights1))[x]))
-
-        progsIn.append(random.choices(progs, weights=weights1, k=1)[0])
-        #print(str(progsIn[len(progsIn)-1]) + " " + str(normalize.main(weights1)[progs.index(progsIn[len(progsIn)-1])]))
-
+        currentOut.append(random.choices(progs, weights=weights1, k=1)[0])
 
     # If the user doesn't input a progression
     else:
-        progsIn.append(random.choices(progs, weights=alg0Out, k=1)[0])
-        #print(str(progsIn[len(progsIn)-1]) + " " + str(normalize.main(alg0Out)[progs.index(progsIn[len(progsIn)-1])]))
+        currentOut.append(random.choices(progs, weights=alg0Out, k=1))
+
+    if len(currentOut) == 1 and has2Beats(currentOut[0]) and currentOut[0][-1:] != '7':
+        progsIn.append(currentOut[0])
+
+        possibleFollow = random.choices(progs, weights=alg1Out[progs.index(currentOut[0])], k=1)[0]
+
+        while(not has2Beats(possibleFollow)):
+            possibleFollow = random.choices(progs, weights=alg1Out[progs.index(currentOut[0])], k=1)[0]
+
+        progsIn.append(possibleFollow)
+
+    else:
+        progsIn.append(currentOut[0])
+
+    for x in progsIn:
+        print(x)
+    print("|")
 
     return progsIn
+
 
 def baysianModel(progs):
     alg0Out = normalize.main(algorithm1.possibleProgressions(progs))
@@ -84,6 +95,8 @@ def main():
                 progs.append(c)
                 #print(c)
 
+
+
     # Get the baysianModel from the data to reuse over multiple iterations of prediction
     modelOut = baysianModel(progs)
 
@@ -91,13 +104,31 @@ def main():
     progsIn = progsIn.replace(" ", "").split(",")
 
     # Generate more progressions until the length is as long as the progLength
-    while (len(progsIn) < progLength):
+    for x in range(progLength - len(progsIn)):
         progsIn = predictior(progsIn, progs, modelOut[0], modelOut[1], modelOut[2])
+    printString = ""
 
-    # Print out each progression and play if the user said to
-    for x in progsIn:
-        print(x)
-        if playing == "Y":
+    # Create a string of each progression seperated by |s for printing
+    printString += "| "
+    holdBar = False
+    for x in range(len(progsIn)):
+        printString += progsIn[x] + " "
+
+        if has2Beats(progsIn[x]) and holdBar == False:
+            holdBar = True
+
+        elif has2Beats(progsIn[x]) and holdBar == True:
+            printString += "| "
+            holdBar = False
+
+        else:
+            printString += "| "
+
+    print(printString)
+
+    # Play each progression if the user requested
+    if playing == "Y":
+        for x in progsIn:
             if True in [char.isdigit() for char in x]:
                 currentBeat = int(x[-1])
                 x = x[:-1]
@@ -106,7 +137,6 @@ def main():
 
             for y in range(currentBeat):
                 player.translate(x, "G", playSPeed)
-
 
     # prints the arrays of probabilities
     # print(progs)
@@ -117,6 +147,9 @@ def main():
     #two_dimensional_visual.two_d_visualize(modelOut[1], progs, "P(B|A)")
 
     return None
+
+def has2Beats(chord):
+    return True in [char.isdigit() for char in chord] and chord[-1:] != '7'
 
 if __name__ == '__main__':
     main()
