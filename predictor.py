@@ -8,6 +8,25 @@ import two_dimensional_visual
 
 # test
 def predictior(progsIn, progs, alg0Out, alg1Out, alg2Out):
+    '''
+            Predicts a following progression based on the user input (progsIn) or general probability if the user didn't
+            give a list of progressions. If the user gave a list of progressions 2 or more elements look if we have a
+            probability space for those progressions, if not look at only the last progression, if that also isn't in
+            the data then use P(A). If the user gives a list of 1 progression use P(B|A) to generate the following
+            progression, if that isn't available in the data then just use P(A) to generate the following chord. If the
+            user inputs nothing then use P(A) to generate the new progression.
+
+                Parameters:
+                    progsIn (list): a list of progression input by the user or empty if they input nothing
+                    progs   (list): a list of every possible progression found in the data
+                    alg0Out (list): P(A)
+                    alg1Out (list): P(B|A)
+                    alg2Out (list): P(C|AB)
+
+                Returns:
+                    progsIn (list): A list of strings that is progsIn with the next generated measure appended to the end
+    '''
+
     # A list of all the possible prorgessions
 
     # # If the user didn't input anything clear progsIn
@@ -41,12 +60,12 @@ def predictior(progsIn, progs, alg0Out, alg1Out, alg2Out):
     else:
         currentOut.append(random.choices(progs, weights=alg0Out, k=1))
 
-    if len(currentOut) == 1 and has2Beats(currentOut[0]) and currentOut[0][-1:] != '7':
+    if len(currentOut) == 1 and chordInlcudesBeats(currentOut[0]) and currentOut[0][-1:] != '7':
         progsIn.append(currentOut[0])
 
         possibleFollow = random.choices(progs, weights=alg1Out[progs.index(currentOut[0])], k=1)[0]
 
-        while(not has2Beats(possibleFollow)):
+        while(not chordInlcudesBeats(possibleFollow)):
             possibleFollow = random.choices(progs, weights=alg1Out[progs.index(currentOut[0])], k=1)[0]
 
         progsIn.append(possibleFollow)
@@ -54,14 +73,21 @@ def predictior(progsIn, progs, alg0Out, alg1Out, alg2Out):
     else:
         progsIn.append(currentOut[0])
 
-    for x in progsIn:
-        print(x)
-    print("|")
-
     return progsIn
 
 
 def baysianModel(progs):
+    '''
+        calculates P(A), P(B|A), P(C|AB) where the probabilities were calculated by algorithm1's baysian probabilities
+        looking through the data and finding the probabilities of each element in progs.
+
+            Parameters:
+                progs (list): a list of every possible progression found in the data
+
+            Returns:
+                [alg0Out, alg1Out, alg2Out] (list): a list of lists containing [P(A), P(B|A), P(C|AB)]
+    '''
+
     alg0Out = normalize.main(algorithm1.possibleProgressions(progs))
     alg1Out = []
     alg2Out = []
@@ -76,6 +102,19 @@ def baysianModel(progs):
     return [alg0Out, alg1Out, alg2Out]
 
 def main():
+    '''
+        Asks the user if they want the music played
+        Asks the user to input a comma separated list of progressions
+        Generates a list of every possible progression in the dataset and saves it to progs
+        Calls BayseanModel with progs and saves the model
+        Generates a preset number of following progressions and prints them out seperated by bars like a chart.
+
+            Parameters:
+                None
+
+            Returns:
+                None
+    '''
 
     progLength = 10
     playSPeed = 120/60/4
@@ -95,8 +134,6 @@ def main():
                 progs.append(c)
                 #print(c)
 
-
-
     # Get the baysianModel from the data to reuse over multiple iterations of prediction
     modelOut = baysianModel(progs)
 
@@ -114,10 +151,10 @@ def main():
     for x in range(len(progsIn)):
         printString += progsIn[x] + " "
 
-        if has2Beats(progsIn[x]) and holdBar == False:
+        if chordInlcudesBeats(progsIn[x]) and holdBar == False:
             holdBar = True
 
-        elif has2Beats(progsIn[x]) and holdBar == True:
+        elif chordInlcudesBeats(progsIn[x]) and holdBar == True:
             printString += "| "
             holdBar = False
 
@@ -148,8 +185,18 @@ def main():
 
     return None
 
-def has2Beats(chord):
-    return True in [char.isdigit() for char in chord] and chord[-1:] != '7'
+def chordInlcudesBeats(progression):
+    '''
+    Determines if a progression contains a beat by checking if the progression
+    contains a number excluding '7', which would be a beat in our data scheme
+
+        Parameters:
+            progression (string): a series of roman numerals possibly followed buy an integer
+
+        Returns:
+            boolean true if there is a number in the given progression that isn't a '7'
+    '''
+    return True in [char.isdigit() for char in progression] and progression[-1:] != '7'
 
 if __name__ == '__main__':
     main()
