@@ -10,7 +10,7 @@ def main():
             None
 
         Returns:
-            output (list): List of Song Objects (See Reference Manual for details)
+            output (list): List of Song Objects (See Documentation for details)
     '''
     songList = loader.main()
     output = [] #list of Song objects
