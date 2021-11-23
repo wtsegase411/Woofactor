@@ -15,7 +15,6 @@ def main():
     songList = loader.main()
     output = [] #list of Song objects
     for i in songList: #iterates through file by row
-        name = ""
         lines = []
         progs = []
         forms = []
