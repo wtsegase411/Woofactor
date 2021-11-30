@@ -4,6 +4,18 @@ from mingus.containers import Note, NoteContainer
 from mingus.midi import fluidsynth
 
 def translate(input, key, sleeptime):
+    '''
+        Playes a chord using the given chord then sleeps for sleeptime.
+
+            Parameters:
+                input (string): A chord in roman numeral form
+                key (string): A key that the chord should be played in
+                sleeptime (int): How long the player should wait before playing the next key
+
+            Returns:
+                None
+    '''
+
     fluidsynth.init("Nice-Steinway-Lite-v3.0.sf2")
 
     if (input == "I"):
