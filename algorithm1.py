@@ -1,20 +1,20 @@
 import getLines
 
-
-def possibleFirstChord():
-    # List of each unique line from the dataset
-    lines = getLines.main()
-    # list of possible chords in a beginning of line
-    possibleChord = []
-    output = []
-
-    for l in lines:
-        # Adds chords that are present in a beginning of a line
-        possibleChord.append(l.chords[0])
-
-    for y in set(possibleChord):
-        output.append(str(y) + " " + str(round((possibleChord.count(y) / len(possibleChord) * 100), 2)) + "%")
-    return output
+# outdated
+# def possibleFirstChord():
+#     # List of each unique line from the dataset
+#     lines = getLines.main()
+#     # list of possible chords in a beginning of line
+#     possibleChord = []
+#     output = []
+#
+#     for l in lines:
+#         # Adds chords that are present in a beginning of a line
+#         possibleChord.append(l.chords[0])
+#
+#     for y in set(possibleChord):
+#         output.append(str(y) + " " + str(round((possibleChord.count(y) / len(possibleChord) * 100), 2)) + "%")
+#     return output
 
 
 def possibleProgressions(progs):
