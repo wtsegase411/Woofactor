@@ -196,6 +196,7 @@ def chordInlcudesBeats(progression):
         Returns:
             boolean true if there is a number in the given progression that isn't a '7'
     '''
+
     return True in [char.isdigit() for char in progression] and progression[-1:] != '7'
 
 if __name__ == '__main__':
