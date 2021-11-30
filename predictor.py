@@ -149,16 +149,18 @@ def main():
     printString += "| "
     holdBar = False
     for x in range(len(progsIn)):
-        printString += progsIn[x] + " "
+        if chordInlcudesBeats(progsIn[x]):
+            printString += progsIn[x][:-1] + " "
 
-        if chordInlcudesBeats(progsIn[x]) and holdBar == False:
-            holdBar = True
+            if holdBar == False:
+                holdBar = True
 
-        elif chordInlcudesBeats(progsIn[x]) and holdBar == True:
-            printString += "| "
-            holdBar = False
+            else:
+                printString += "| "
+                holdBar = False
 
         else:
+            printString += progsIn[x] + " "
             printString += "| "
 
     print(printString)
