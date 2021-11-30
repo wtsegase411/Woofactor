@@ -120,70 +120,76 @@ def main():
     playSPeed = 120/60/4
     defaultBeats = 4
 
-    playing = input("Play music? (Y/N)")
+    cont = True
 
-    # Get the user inputed list of progressons seperated by commas
-    progsIn = input("Comma separated string of progressions: ")
+    while cont != "stop" and cont != "Stop":
 
-    lines = getLines.main()
-    progs = []
+        playing = input("Play music? (Y/N)")
 
-    for l in lines:
-        for c in l.chords:
-            if c not in progs:
-                progs.append(c)
-                #print(c)
+        # Get the user inputed list of progressons seperated by commas
+        progsIn = input("Comma separated list of chords in roman numeral form: ")
 
-    # Get the baysianModel from the data to reuse over multiple iterations of prediction
-    modelOut = baysianModel(progs)
+        lines = getLines.main()
+        progs = []
 
-    # Remove spaces and turn comma seperated string into list
-    progsIn = progsIn.replace(" ", "").split(",")
+        for l in lines:
+            for c in l.chords:
+                if c not in progs:
+                    progs.append(c)
+                    #print(c)
 
-    # Generate more progressions until the length is as long as the progLength
-    for x in range(progLength - len(progsIn)):
-        progsIn = predictior(progsIn, progs, modelOut[0], modelOut[1], modelOut[2])
-    printString = ""
+        # Get the baysianModel from the data to reuse over multiple iterations of prediction
+        modelOut = baysianModel(progs)
 
-    # Create a string of each progression seperated by |s for printing
-    printString += "| "
-    holdBar = False
-    for x in range(len(progsIn)):
-        if chordInlcudesBeats(progsIn[x]):
-            printString += progsIn[x][:-1] + " "
+        # Remove spaces and turn comma seperated string into list
+        progsIn = progsIn.replace(" ", "").split(",")
 
-            if holdBar == False:
-                holdBar = True
+        # Generate more progressions until the length is as long as the progLength
+        for x in range(progLength - len(progsIn)):
+            progsIn = predictior(progsIn, progs, modelOut[0], modelOut[1], modelOut[2])
+        printString = ""
+
+        # Create a string of each progression seperated by |s for printing
+        printString += "| "
+        holdBar = False
+        for x in range(len(progsIn)):
+            if chordInlcudesBeats(progsIn[x]):
+                printString += progsIn[x][:-1] + " "
+
+                if holdBar == False:
+                    holdBar = True
+
+                else:
+                    printString += "| "
+                    holdBar = False
 
             else:
+                printString += progsIn[x] + " "
                 printString += "| "
-                holdBar = False
 
-        else:
-            printString += progsIn[x] + " "
-            printString += "| "
+        print(printString)
 
-    print(printString)
+        # Play each progression if the user requested
+        if playing == "Y":
+            for x in progsIn:
+                if True in [char.isdigit() for char in x]:
+                    currentBeat = int(x[-1])
+                    x = x[:-1]
+                else:
+                    currentBeat = defaultBeats
 
-    # Play each progression if the user requested
-    if playing == "Y":
-        for x in progsIn:
-            if True in [char.isdigit() for char in x]:
-                currentBeat = int(x[-1])
-                x = x[:-1]
-            else:
-                currentBeat = defaultBeats
+                for y in range(currentBeat):
+                    player.translate(x, "G", playSPeed)
 
-            for y in range(currentBeat):
-                player.translate(x, "G", playSPeed)
+        # prints the arrays of probabilities
+        # print(progs)
+        # for p in range(len(progs)):
+        #     print(progs[p] + str(modelOut[1][p]))
 
-    # prints the arrays of probabilities
-    # print(progs)
-    # for p in range(len(progs)):
-    #     print(progs[p] + str(modelOut[1][p]))
+        # outputs a visualization of the data's progressions
+        #two_dimensional_visual.two_d_visualize(modelOut[1], progs, "P(B|A)")
 
-    # outputs a visualization of the data's progressions
-    #two_dimensional_visual.two_d_visualize(modelOut[1], progs, "P(B|A)")
+        cont = input("Generate another? ('stop') to end: ")
 
     return None
 
