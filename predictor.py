@@ -3,6 +3,8 @@ import getLines
 import player
 import normalize
 import random
+
+import romanNumeralToChord
 import two_dimensional_visual
 
 
@@ -120,6 +122,18 @@ def main():
     playSPeed = 120/60/4
     defaultBeats = 4
 
+    lines = getLines.main()
+    progs = []
+
+    for l in lines:
+        for c in l.chords:
+            if c not in progs:
+                progs.append(c)
+                # print(c)
+
+    # Get the baysianModel from the data to reuse over multiple iterations of prediction
+    modelOut = baysianModel(progs)
+
     cont = True
 
     while cont != "stop" and cont != "Stop":
@@ -129,18 +143,6 @@ def main():
         # Get the user inputed list of progressons seperated by commas
         progsIn = input("Comma separated list of chords in roman numeral form: ")
 
-        lines = getLines.main()
-        progs = []
-
-        for l in lines:
-            for c in l.chords:
-                if c not in progs:
-                    progs.append(c)
-                    #print(c)
-
-        # Get the baysianModel from the data to reuse over multiple iterations of prediction
-        modelOut = baysianModel(progs)
-
         # Remove spaces and turn comma seperated string into list
         progsIn = progsIn.replace(" ", "").split(",")
 
@@ -149,25 +151,9 @@ def main():
             progsIn = predictior(progsIn, progs, modelOut[0], modelOut[1], modelOut[2])
         printString = ""
 
-        # Create a string of each progression seperated by |s for printing
-        printString += "| "
-        holdBar = False
-        for x in range(len(progsIn)):
-            if chordInlcudesBeats(progsIn[x]):
-                printString += progsIn[x][:-1] + " "
+        print(printChart(progsIn))
 
-                if holdBar == False:
-                    holdBar = True
-
-                else:
-                    printString += "| "
-                    holdBar = False
-
-            else:
-                printString += progsIn[x] + " "
-                printString += "| "
-
-        print(printString)
+        print(printChart(romanNumeralToChord.main(progsIn, "C")))
 
         # Play each progression if the user requested
         if playing == "Y":
@@ -193,6 +179,30 @@ def main():
 
     return None
 
+
+def printChart(progsIn):
+
+    # Create a string of each progression seperated by |s for printing
+    printString = "| "
+    holdBar = False
+
+    for x in range(len(progsIn)):
+        if chordInlcudesBeats(progsIn[x]):
+            printString += progsIn[x][:-1] + " "
+
+            if holdBar == False:
+                holdBar = True
+
+            else:
+                printString += "| "
+                holdBar = False
+
+        else:
+            printString += progsIn[x] + " "
+            printString += "| "
+    return printString
+
+
 def chordInlcudesBeats(progression):
     '''
     Determines if a progression contains a beat by checking if the progression
@@ -206,6 +216,7 @@ def chordInlcudesBeats(progression):
     '''
 
     return True in [char.isdigit() for char in progression] and progression[-1:] != '7'
+
 
 if __name__ == '__main__':
     main()
