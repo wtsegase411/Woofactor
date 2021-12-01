@@ -151,7 +151,6 @@ def main():
         modelOut = baysianModel(progs)
         modelSave.saves(modelOut)
 
-
     cont = True
 
     while cont != "stop" and cont != "Stop":
@@ -163,7 +162,7 @@ def main():
         while key not in ["C", "D", "E", "F", "G", "A", "B", "Cm", "Dm", "Em", "Fm", "Gm", "Am", "Bm"]:
             key = input("Invalid key please reenter: ")
 
-        # Get the user inputed list of progressons seperated by commas
+        # Get the user inputted list of chords separated by commas
         progsIn = input("Comma separated list of chords in roman numeral form: ")
 
         # Remove spaces and turn comma seperated string into list
