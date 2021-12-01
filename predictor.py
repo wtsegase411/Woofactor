@@ -1,4 +1,6 @@
 import os
+from os.path import exists
+
 import algorithm1
 import getLines
 import player
@@ -121,8 +123,10 @@ def main():
                 None
     '''
 
+    # How long the progression should end up
     progLength = 10
-    playSPeed = 120/60/4
+
+    bpm = 120
     defaultBeats = 4
 
     lines = getLines.main()
@@ -133,15 +137,20 @@ def main():
             if c not in progs:
                 progs.append(c)
 
-    genModel = input("Would you like to generate a model? (Y/N)")
+    if exists("model.txt"):
+        genModel = input("Would you like to generate a model? (Y/N)")
 
-    if genModel == "N":
-        modelOut = modelSave.reads()
+        if genModel == "N":
+            modelOut = modelSave.reads()
+
+        else:
+            modelOut = baysianModel(progs)
+            modelSave.saves(modelOut)
 
     else:
-        # Get the baysianModel from the data to reuse over multiple iterations of prediction
         modelOut = baysianModel(progs)
         modelSave.saves(modelOut)
+
 
     cont = True
 
@@ -178,7 +187,7 @@ def main():
                     currentBeat = defaultBeats
 
                 for y in range(currentBeat):
-                    player.translate(x, key, playSPeed)
+                    player.translate(x, key, bpm/60/defaultBeats)
 
         # prints the arrays of probabilities
         # print(progs)
