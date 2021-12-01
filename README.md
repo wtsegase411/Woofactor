@@ -10,3 +10,4 @@ For this project, we worked on developing a tool that allows us to digitally rep
 1) Digital represenation scheme <br/>
 This includes a song model of chord progressions using Roman numerals. We represented the songs by breaking each song into an ordered list of progressions which each contain collection of lines. Each line contains list of chords and number of beats next to the chords if the number of beat is not four. The lines are then contained in a form along with the keys of the song. The form then makes up the structure of the song.   
 [rep.png](https://github.com/wtsegase411/Woofactor/blob/main/rep.png?raw=true)
+2) 
