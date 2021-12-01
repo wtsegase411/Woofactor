@@ -140,6 +140,11 @@ def main():
 
         playing = input("Play music? (Y/N)")
 
+        key = input("What key would you like the final out put to be in? ")
+
+        while key not in ["C", "D", "E", "F", "G", "A", "B", "Cm", "Dm", "Em", "Fm", "Gm", "Am", "Bm"]:
+            key = input("Invalid key please reenter: ")
+
         # Get the user inputed list of progressons seperated by commas
         progsIn = input("Comma separated list of chords in roman numeral form: ")
 
@@ -151,9 +156,9 @@ def main():
             progsIn = predictior(progsIn, progs, modelOut[0], modelOut[1], modelOut[2])
         printString = ""
 
-        print(printChart(progsIn))
+        print(chartFormat(progsIn))
 
-        print(printChart(romanNumeralToChord.main(progsIn, "C")))
+        print(chartFormat(romanNumeralToChord.main(progsIn, key)))
 
         # Play each progression if the user requested
         if playing == "Y":
@@ -165,7 +170,7 @@ def main():
                     currentBeat = defaultBeats
 
                 for y in range(currentBeat):
-                    player.translate(x, "G", playSPeed)
+                    player.translate(x, key, playSPeed)
 
         # prints the arrays of probabilities
         # print(progs)
@@ -180,13 +185,25 @@ def main():
     return None
 
 
-def printChart(progsIn):
+def chartFormat(progsIn):
+    '''
+        Takes in a list of progressions and returns a version of them that is seperated by |s depending on their number
+        of beats
+
+            Parameters:
+                progsIn (list): A list of chords
+
+            Returns:
+                printString (string): A string containing all the elements from progsIn seperated by |s between measures.
+    '''
 
     # Create a string of each progression seperated by |s for printing
     printString = "| "
     holdBar = False
 
     for x in range(len(progsIn)):
+
+        # If the element has beats or '7' or 'm' after the chord
         if chordInlcudesBeats(progsIn[x]):
             printString += progsIn[x][:-1] + " "
 
@@ -200,6 +217,7 @@ def printChart(progsIn):
         else:
             printString += progsIn[x] + " "
             printString += "| "
+
     return printString
 
 
