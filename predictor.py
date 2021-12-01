@@ -1,8 +1,10 @@
+import os
 import algorithm1
 import getLines
 import player
 import normalize
 import random
+import pickle
 
 import romanNumeralToChord
 import two_dimensional_visual
@@ -52,7 +54,7 @@ def predictior(progsIn, progs, alg0Out, alg1Out, alg2Out):
         currentOut.append(random.choices(progs, weights=weights2, k=1)[0])
 
     # If the user only inputs 1 progression
-    elif len(progsIn) >= 1 and sum(alg1Out[progs.index(progsIn[0])]) != 0:
+    elif len(progsIn) >= 1 and progsIn[0] != '' and sum(alg1Out[progs.index(progsIn[0])]) != 0:
 
         weights1 = alg1Out[progs.index(progsIn[0])]
 
@@ -60,7 +62,7 @@ def predictior(progsIn, progs, alg0Out, alg1Out, alg2Out):
 
     # If the user doesn't input a progression
     else:
-        currentOut.append(random.choices(progs, weights=alg0Out, k=1))
+        currentOut = progsIn = (random.choices(progs, weights=alg0Out, k=1))
 
     if len(currentOut) == 1 and chordInlcudesBeats(currentOut[0]) and currentOut[0][-1:] != '7':
         progsIn.append(currentOut[0])
@@ -103,6 +105,35 @@ def baysianModel(progs):
 
     return [alg0Out, alg1Out, alg2Out]
 
+
+def saves(model):
+    '''
+        Saves the output from the model into a file
+            Parameter:
+                model: the model that is being written into a file
+            Returns:
+                 None
+    '''
+
+    with open("model.txt", "wb") as internal_filename:
+        pickle.dump(model, internal_filename)
+
+
+def reads():
+    '''
+        Reads the saved model from a file
+            Parameters:
+                None
+            Returns:
+                model (list of lists): a list of lists containing [P(A), P(B|A), P(C|AB)]
+    '''
+
+    with open("model.txt", "rb") as new_filename:
+        model = pickle.load(new_filename)
+
+    return model
+
+
 def main():
     '''
         Asks the user if they want the music played
@@ -129,10 +160,16 @@ def main():
         for c in l.chords:
             if c not in progs:
                 progs.append(c)
-                # print(c)
 
-    # Get the baysianModel from the data to reuse over multiple iterations of prediction
-    modelOut = baysianModel(progs)
+    genModel = input("Would you like to generate a model? (Y/N)")
+
+    if genModel == "N":
+        modelOut = reads()
+
+    else:
+        # Get the baysianModel from the data to reuse over multiple iterations of prediction
+        modelOut = baysianModel(progs)
+        saves(modelOut)
 
     cont = True
 
@@ -154,7 +191,6 @@ def main():
         # Generate more progressions until the length is as long as the progLength
         for x in range(progLength - len(progsIn)):
             progsIn = predictior(progsIn, progs, modelOut[0], modelOut[1], modelOut[2])
-        printString = ""
 
         print(chartFormat(progsIn))
 
