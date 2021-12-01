@@ -4,10 +4,10 @@ import getLines
 import player
 import normalize
 import random
-import pickle
+import modelSave
 
 import romanNumeralToChord
-import two_dimensional_visual
+import arrayVisualizer
 
 
 # test
@@ -106,34 +106,6 @@ def baysianModel(progs):
     return [alg0Out, alg1Out, alg2Out]
 
 
-def saves(model):
-    '''
-        Saves the output from the model into a file
-            Parameter:
-                model: the model that is being written into a file
-            Returns:
-                 None
-    '''
-
-    with open("model.txt", "wb") as internal_filename:
-        pickle.dump(model, internal_filename)
-
-
-def reads():
-    '''
-        Reads the saved model from a file
-            Parameters:
-                None
-            Returns:
-                model (list of lists): a list of lists containing [P(A), P(B|A), P(C|AB)]
-    '''
-
-    with open("model.txt", "rb") as new_filename:
-        model = pickle.load(new_filename)
-
-    return model
-
-
 def main():
     '''
         Asks the user if they want the music played
@@ -164,12 +136,12 @@ def main():
     genModel = input("Would you like to generate a model? (Y/N)")
 
     if genModel == "N":
-        modelOut = reads()
+        modelOut = modelSave.reads()
 
     else:
         # Get the baysianModel from the data to reuse over multiple iterations of prediction
         modelOut = baysianModel(progs)
-        saves(modelOut)
+        modelSave.saves(modelOut)
 
     cont = True
 
