@@ -1,13 +1,15 @@
 import os
+from os.path import exists
+
 import algorithm1
 import getLines
 import player
 import normalize
 import random
-import pickle
+import modelSave
 
 import romanNumeralToChord
-import two_dimensional_visual
+import arrayVisualizer
 
 
 # test
@@ -106,34 +108,6 @@ def baysianModel(progs):
     return [alg0Out, alg1Out, alg2Out]
 
 
-def saves(model):
-    '''
-        Saves the output from the model into a file
-            Parameter:
-                model: the model that is being written into a file
-            Returns:
-                 None
-    '''
-
-    with open("model.txt", "wb") as internal_filename:
-        pickle.dump(model, internal_filename)
-
-
-def reads():
-    '''
-        Reads the saved model from a file
-            Parameters:
-                None
-            Returns:
-                model (list of lists): a list of lists containing [P(A), P(B|A), P(C|AB)]
-    '''
-
-    with open("model.txt", "rb") as new_filename:
-        model = pickle.load(new_filename)
-
-    return model
-
-
 def main():
     '''
         Asks the user if they want the music played
@@ -149,8 +123,10 @@ def main():
                 None
     '''
 
+    # How long the progression should end up
     progLength = 10
-    playSPeed = 120/60/4
+
+    bpm = 120
     defaultBeats = 4
 
     lines = getLines.main()
@@ -161,15 +137,19 @@ def main():
             if c not in progs:
                 progs.append(c)
 
-    genModel = input("Would you like to generate a model? (Y/N)")
+    if exists("model.txt"):
+        genModel = input("Would you like to generate a model? (Y/N)")
 
-    if genModel == "N":
-        modelOut = reads()
+        if genModel == "N":
+            modelOut = modelSave.reads()
+
+        else:
+            modelOut = baysianModel(progs)
+            modelSave.saves(modelOut)
 
     else:
-        # Get the baysianModel from the data to reuse over multiple iterations of prediction
         modelOut = baysianModel(progs)
-        saves(modelOut)
+        modelSave.saves(modelOut)
 
     cont = True
 
@@ -182,7 +162,7 @@ def main():
         while key not in ["C", "D", "E", "F", "G", "A", "B", "Cm", "Dm", "Em", "Fm", "Gm", "Am", "Bm"]:
             key = input("Invalid key please reenter: ")
 
-        # Get the user inputed list of progressons seperated by commas
+        # Get the user inputted list of chords separated by commas
         progsIn = input("Comma separated list of chords in roman numeral form: ")
 
         # Remove spaces and turn comma seperated string into list
@@ -206,7 +186,7 @@ def main():
                     currentBeat = defaultBeats
 
                 for y in range(currentBeat):
-                    player.translate(x, key, playSPeed)
+                    player.translate(x, key, bpm/60/defaultBeats)
 
         # prints the arrays of probabilities
         # print(progs)
