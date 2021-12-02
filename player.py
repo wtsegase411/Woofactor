@@ -18,6 +18,9 @@ def translate(input, key, sleeptime):
 
     fluidsynth.init("Nice-Steinway-Lite-v3.0.sf2")
 
+    if "m" in key:
+        key = key[:-1].lower()
+
     if (input == "I"):
         fluidsynth.play_NoteContainer(NoteContainer(chords.I(key)))
         time.sleep(sleeptime)
