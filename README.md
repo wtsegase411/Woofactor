@@ -27,7 +27,7 @@ The user is prompted to generate a model. If this is the first time predictor.py
 ``` 
  Play music? (Y/N) N
  ```
-The user is then given the choice of the key of the output. Any major or minor key is valid and the user will be prompted again if the input is invalid. 
+The user is then given the choice of the key of the output. Any major or minor key is valid and the user will be prompted again if the input is invalid. If you want to use a minor key simply follow the key with an 'm'. E.g. "Am"
 ```
  What key would you like the final out put to be in? C
 ```
