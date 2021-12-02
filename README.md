@@ -23,7 +23,11 @@ The main algorithm that the user will interface with is predictor.py. Inside of 
 ```
  \Woofactor> python predictor.py
  ```
-The user is prompted to generate a model. If this is the first time predictor.py is run the user will need to input “Y” to create a model based on the existing data. Any time data is adjusted a new model should be generated however given an invalid prompt the value will default to N.
+If this is not the first time the program has been run, the user is prompted to generate a model. If the program finds a model saved the user can input 'Y' to use that model, otherwise they can enter 'N' to generate and save a new one. Any time data is adjusted a new model should be generated however given an invalid prompt the value will default to N.
+```
+Would you like to generate a model? (Y/N)
+```
+The next prompt determines whether the output from the algorithm will be played aloud by the synthesizer. The default given an invalid prompt is N.
 ``` 
  Play music? (Y/N) N
  ```
