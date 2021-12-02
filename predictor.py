@@ -163,7 +163,7 @@ def main():
         # Check if there is an element in progsIn that wasn't found in the data
         unknownChord = False
         for x in progsIn:
-            if x not in possibleChords:
+            if x not in possibleChords and x != "":
                 unknownChord = True
 
         if unknownChord:
