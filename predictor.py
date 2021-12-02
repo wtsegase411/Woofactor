@@ -112,8 +112,8 @@ def main():
     '''
         Asks the user if they want the music played
         Asks the user to input a comma separated list of progressions
-        Generates a list of every possible progression in the dataset and saves it to progs
-        Calls BayseanModel with progs and saves the model
+        Generates a list of every possible progression in the dataset and saves it to chords
+        Calls BayseanModel with chords and saves the model
         Generates a preset number of following progressions and prints them out seperated by bars like a chart.
 
             Parameters:
@@ -130,12 +130,12 @@ def main():
     defaultBeats = 4
 
     lines = getLines.main()
-    progs = []
+    chords = []
 
     for l in lines:
         for c in l.chords:
-            if c not in progs:
-                progs.append(c)
+            if c not in chords:
+                chords.append(c)
 
     if exists("model.txt"):
         genModel = input("Would you like to generate a model? (Y/N)")
@@ -144,11 +144,11 @@ def main():
             modelOut = modelSave.reads()
 
         else:
-            modelOut = baysianModel(progs)
+            modelOut = baysianModel(chords)
             modelSave.saves(modelOut)
 
     else:
-        modelOut = baysianModel(progs)
+        modelOut = baysianModel(chords)
         modelSave.saves(modelOut)
 
     cont = True
@@ -168,35 +168,45 @@ def main():
         # Remove spaces and turn comma seperated string into list
         progsIn = progsIn.replace(" ", "").split(",")
 
-        # Generate more progressions until the length is as long as the progLength
-        for x in range(progLength - len(progsIn)):
-            progsIn = predictior(progsIn, progs, modelOut[0], modelOut[1], modelOut[2])
+        # Check if there is an element in progsIn that wasn't found in the data
+        unknownChord = False
+        for x in progsIn:
+            if x not in chords:
+                unknownChord = True
 
-        print(chartFormat(progsIn))
+        if unknownChord:
+            print("There was an unknown chord in the input, please try a different progression")
 
-        print(chartFormat(romanNumeralToChord.main(progsIn, key)))
+        else:
+            # Generate more progressions until the length is as long as the progLength
+            for x in range(progLength - len(progsIn)):
+                progsIn = predictior(progsIn, chords, modelOut[0], modelOut[1], modelOut[2])
 
-        # Play each progression if the user requested
-        if playing == "Y":
-            for x in progsIn:
-                if True in [char.isdigit() for char in x]:
-                    currentBeat = int(x[-1])
-                    x = x[:-1]
-                else:
-                    currentBeat = defaultBeats
+            print(chartFormat(progsIn))
 
-                for y in range(currentBeat):
-                    player.translate(x, key, bpm/60/defaultBeats)
+            print(chartFormat(romanNumeralToChord.main(progsIn, key)))
 
-        # prints the arrays of probabilities
-        # print(progs)
-        # for p in range(len(progs)):
-        #     print(progs[p] + str(modelOut[1][p]))
+            # Play each progression if the user requested
+            if playing == "Y":
+                for x in progsIn:
+                    if True in [char.isdigit() for char in x]:
+                        currentBeat = int(x[-1])
+                        x = x[:-1]
+                    else:
+                        currentBeat = defaultBeats
 
-        # outputs a visualization of the data's progressions
-        #two_dimensional_visual.two_d_visualize(modelOut[1], progs, "P(B|A)")
+                    for y in range(currentBeat):
+                        player.translate(x, key, bpm/60/defaultBeats)
 
-        cont = input("Generate another? ('stop') to end: ")
+            # prints the arrays of probabilities
+            # print(chords)
+            # for p in range(len(chords)):
+            #     print(chords[p] + str(modelOut[1][p]))
+
+            # outputs a visualization of the data's progressions
+            #two_dimensional_visual.two_d_visualize(modelOut[1], chords, "P(B|A)")
+
+            cont = input("Generate another? ('stop') to end: ")
 
     return None
 
