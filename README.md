@@ -3,7 +3,7 @@
 Woo Factor Music is a company that creates music for use in television, film and advertising.
 
 ## Brief Description of Project 
- Our team has joined this project to help with early stage research into how to understand and then automatically generate the basic architecture of a song, which is called it's "chord progression".
+ Our team has joined this project to help with early stage research into how to understand and then automatically generate the basic architecture of a song, which is called its "chord progression".
 
 For this project, we worked on developing a tool that allows us to digitally represent songs at the grammatical chord progression level. Based on that chosen representation scheme, we extended the tool to be able to predict where the song could go.
 ## Installation
@@ -15,7 +15,7 @@ pip install matplotlib
 pip install fluidsynth
 ```
 
-If you are installing on a Windows machine go to the User Guide.pdf to find an additional installation step
+If you are installing on a Windows machine go to the User Guide.pdf to find an additional installation step.
 
 ## Usage
 
@@ -31,7 +31,7 @@ The user is then given the choice of the key of the output. Any major or minor k
 ```
  What key would you like the final out put to be in? C
 ```
-The next prompt is for the initial data provided to the algorithm. The user must input a comma separated list of chords in the form of Roman numerals. This input will be used to predict the next chord progression.
+The next prompt is for the initial data provided to the algorithm. The user must input a comma separated list of chords in the form of Roman numerals. This input will be used to predict the next chord progression. This progression can be any length, if the user enters nothing then the program will generate a random first chord by looking at the frequency of each chord in the data.
 ```
  Comma separated list of chords in roman numeral form: I,IV
  ```
