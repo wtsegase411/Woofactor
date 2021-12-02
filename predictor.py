@@ -1,19 +1,17 @@
 import os
 from os.path import exists
-
 import algorithm1
 import getLines
 import player
 import normalize
 import random
 import modelSave
-
 import romanNumeralToChord
 import arrayVisualizer
 
 
 # test
-def predictior(progsIn, progs, alg0Out, alg1Out, alg2Out):
+def predictior(progsIn, possibleChords, alg0Out, alg1Out, alg2Out):
     '''
             Predicts a following progression based on the user input (progsIn) or general probability if the user didn't
             give a list of progressions. If the user gave a list of progressions 2 or more elements look if we have a
@@ -24,7 +22,7 @@ def predictior(progsIn, progs, alg0Out, alg1Out, alg2Out):
 
                 Parameters:
                     progsIn (list): a list of progression input by the user or empty if they input nothing
-                    progs   (list): a list of every possible progression found in the data
+                    possibleChords   (list): a list of every possible chord found in the data
                     alg0Out (list): P(A)
                     alg1Out (list): P(B|A)
                     alg2Out (list): P(C|AB)
@@ -32,12 +30,6 @@ def predictior(progsIn, progs, alg0Out, alg1Out, alg2Out):
                 Returns:
                     progsIn (list): A list of strings that is progsIn with the next generated measure appended to the end
     '''
-
-    # A list of all the possible prorgessions
-
-    # # If the user didn't input anything clear progsIn
-    # if progsIn[0] == '':
-    #     progsIn = []
 
     currentOut = []
 
@@ -48,31 +40,31 @@ def predictior(progsIn, progs, alg0Out, alg1Out, alg2Out):
     else:
         workingProgs = progsIn
 
-    # If the user inputs 2 progressions we can see in the data
-    if len(workingProgs) == 2 and sum(alg2Out[progs.index(workingProgs[0]) * len(progs) + progs.index(workingProgs[1])]) != 0:
+    # If the user inputs 2 chords we can see in the data
+    if len(workingProgs) == 2 and sum(alg2Out[possibleChords.index(workingProgs[0]) * len(possibleChords) + possibleChords.index(workingProgs[1])]) != 0:
 
-        weights2 = alg2Out[progs.index(workingProgs[0]) * len(progs) + progs.index(workingProgs[1])]
+        weights2 = alg2Out[possibleChords.index(workingProgs[0]) * len(possibleChords) + possibleChords.index(workingProgs[1])]
 
-        currentOut.append(random.choices(progs, weights=weights2, k=1)[0])
+        currentOut.append(random.choices(possibleChords, weights=weights2, k=1)[0])
 
-    # If the user only inputs 1 progression
-    elif len(progsIn) >= 1 and progsIn[0] != '' and sum(alg1Out[progs.index(progsIn[0])]) != 0:
+    # If the user only inputs 1 chord
+    elif len(progsIn) >= 1 and progsIn[0] != '' and sum(alg1Out[possibleChords.index(progsIn[0])]) != 0:
 
-        weights1 = alg1Out[progs.index(progsIn[0])]
+        weights1 = alg1Out[possibleChords.index(progsIn[0])]
 
-        currentOut.append(random.choices(progs, weights=weights1, k=1)[0])
+        currentOut.append(random.choices(possibleChords, weights=weights1, k=1)[0])
 
     # If the user doesn't input a progression
     else:
-        currentOut = progsIn = (random.choices(progs, weights=alg0Out, k=1))
+        currentOut = progsIn = (random.choices(possibleChords, weights=alg0Out, k=1))
 
     if len(currentOut) == 1 and chordInlcudesBeats(currentOut[0]) and currentOut[0][-1:] != '7':
         progsIn.append(currentOut[0])
 
-        possibleFollow = random.choices(progs, weights=alg1Out[progs.index(currentOut[0])], k=1)[0]
+        possibleFollow = random.choices(possibleChords, weights=alg1Out[possibleChords.index(currentOut[0])], k=1)[0]
 
         while(not chordInlcudesBeats(possibleFollow)):
-            possibleFollow = random.choices(progs, weights=alg1Out[progs.index(currentOut[0])], k=1)[0]
+            possibleFollow = random.choices(possibleChords, weights=alg1Out[possibleChords.index(currentOut[0])], k=1)[0]
 
         progsIn.append(possibleFollow)
 
@@ -82,28 +74,28 @@ def predictior(progsIn, progs, alg0Out, alg1Out, alg2Out):
     return progsIn
 
 
-def baysianModel(progs):
+def baysianModel(possibleChords):
     '''
         calculates P(A), P(B|A), P(C|AB) where the probabilities were calculated by algorithm1's baysian probabilities
-        looking through the data and finding the probabilities of each element in progs.
+        looking through the data and finding the probabilities of each element in possibleChords.
 
             Parameters:
-                progs (list): a list of every possible progression found in the data
+                possibleChords (list): a list of every possible chord found in the data
 
             Returns:
                 [alg0Out, alg1Out, alg2Out] (list): a list of lists containing [P(A), P(B|A), P(C|AB)]
     '''
 
-    alg0Out = normalize.main(algorithm1.possibleProgressions(progs))
+    alg0Out = normalize.main(algorithm1.possibleProgressions(possibleChords))
     alg1Out = []
     alg2Out = []
 
-    for part in progs:
-        alg1Out.append(normalize.main(algorithm1.possibleProgressionsLast1(progs, part)))
+    for chord in possibleChords:
+        alg1Out.append(normalize.main(algorithm1.possibleProgressionsLast1(possibleChords, chord)))
 
-    for part1 in progs:
-        for part2 in progs:
-            alg2Out.append(normalize.main(algorithm1.possibleProgressionsLast2(progs, part1, part2)))
+    for chord1 in possibleChords:
+        for chord2 in possibleChords:
+            alg2Out.append(normalize.main(algorithm1.possibleProgressionsLast2(possibleChords, chord1, chord2)))
 
     return [alg0Out, alg1Out, alg2Out]
 
@@ -112,8 +104,8 @@ def main():
     '''
         Asks the user if they want the music played
         Asks the user to input a comma separated list of progressions
-        Generates a list of every possible progression in the dataset and saves it to chords
-        Calls BayseanModel with chords and saves the model
+        Generates a list of every possible progression in the dataset and saves it to possibleChords
+        Calls BayseanModel with possibleChords and saves the model
         Generates a preset number of following progressions and prints them out seperated by bars like a chart.
 
             Parameters:
@@ -130,12 +122,12 @@ def main():
     defaultBeats = 4
 
     lines = getLines.main()
-    chords = []
+    possibleChords = []
 
     for l in lines:
         for c in l.chords:
-            if c not in chords:
-                chords.append(c)
+            if c not in possibleChords:
+                possibleChords.append(c)
 
     if exists("model.txt"):
         genModel = input("Would you like to generate a model? (Y/N)")
@@ -144,11 +136,11 @@ def main():
             modelOut = modelSave.reads()
 
         else:
-            modelOut = baysianModel(chords)
+            modelOut = baysianModel(possibleChords)
             modelSave.saves(modelOut)
 
     else:
-        modelOut = baysianModel(chords)
+        modelOut = baysianModel(possibleChords)
         modelSave.saves(modelOut)
 
     cont = True
@@ -162,8 +154,8 @@ def main():
         while key not in ["C", "D", "E", "F", "G", "A", "B", "Cm", "Dm", "Em", "Fm", "Gm", "Am", "Bm"]:
             key = input("Invalid key please reenter: ")
 
-        # Get the user inputted list of chords separated by commas
-        progsIn = input("Comma separated list of chords in roman numeral form: ")
+        # Get the user inputted list of possibleChords separated by commas
+        progsIn = input("Comma separated list of possibleChords in roman numeral form: ")
 
         # Remove spaces and turn comma seperated string into list
         progsIn = progsIn.replace(" ", "").split(",")
@@ -171,16 +163,17 @@ def main():
         # Check if there is an element in progsIn that wasn't found in the data
         unknownChord = False
         for x in progsIn:
-            if x not in chords:
+            if x not in possibleChords:
                 unknownChord = True
 
         if unknownChord:
             print("There was an unknown chord in the input, please try a different progression")
 
+        # If the user inputted chords are contained in  possibleChords
         else:
             # Generate more progressions until the length is as long as the progLength
             for x in range(progLength - len(progsIn)):
-                progsIn = predictior(progsIn, chords, modelOut[0], modelOut[1], modelOut[2])
+                progsIn = predictior(progsIn, possibleChords, modelOut[0], modelOut[1], modelOut[2])
 
             print(chartFormat(progsIn))
 
@@ -199,12 +192,12 @@ def main():
                         player.translate(x, key, bpm/60/defaultBeats)
 
             # prints the arrays of probabilities
-            # print(chords)
-            # for p in range(len(chords)):
-            #     print(chords[p] + str(modelOut[1][p]))
+            # print(possibleChords)
+            # for p in range(len(possibleChords)):
+            #     print(possibleChords[p] + str(modelOut[1][p]))
 
             # outputs a visualization of the data's progressions
-            #two_dimensional_visual.two_d_visualize(modelOut[1], chords, "P(B|A)")
+            #two_dimensional_visual.two_d_visualize(modelOut[1], possibleChords, "P(B|A)")
 
             cont = input("Generate another? ('stop') to end: ")
 
@@ -213,7 +206,7 @@ def main():
 
 def chartFormat(progsIn):
     '''
-        Takes in a list of progressions and returns a version of them that is seperated by |s depending on their number
+        Takes in a list of chords and returns a version of them that is seperated by |s depending on their number
         of beats
 
             Parameters:
@@ -223,7 +216,7 @@ def chartFormat(progsIn):
                 printString (string): A string containing all the elements from progsIn seperated by |s between measures.
     '''
 
-    # Create a string of each progression seperated by |s for printing
+    # Create a string of each chord seperated by |s for printing
     printString = "| "
     holdBar = False
 
@@ -247,19 +240,19 @@ def chartFormat(progsIn):
     return printString
 
 
-def chordInlcudesBeats(progression):
+def chordInlcudesBeats(chord):
     '''
-    Determines if a progression contains a beat by checking if the progression
+    Determines if a chord contains a beat by checking if the chord
     contains a number excluding '7', which would be a beat in our data scheme
 
         Parameters:
-            progression (string): a series of roman numerals possibly followed buy an integer
+            chord (string): a series of roman numerals possibly followed buy an integer
 
         Returns:
-            boolean true if there is a number in the given progression that isn't a '7'
+            boolean true if there is a number in the given chord that isn't a '7'
     '''
 
-    return True in [char.isdigit() for char in progression] and progression[-1:] != '7'
+    return True in [char.isdigit() for char in chord] and chord[-1:] != '7'
 
 
 if __name__ == '__main__':
