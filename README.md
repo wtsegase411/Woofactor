@@ -10,9 +10,9 @@ For this project, we worked on developing a tool that allows us to digitally rep
 Use the package manager [pip](https://pip.pypa.io/en/stable/) or pycharm to install the following packages.
 
 ```bash
-install mingus
-install matplotlib
-install fluidsynth
+pip install mingus
+pip install matplotlib
+pip install fluidsynth
 ```
 ## Usage
 
