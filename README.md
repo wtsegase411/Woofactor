@@ -39,12 +39,12 @@ The next prompt is for the initial data provided to the algorithm. The user must
 ```
  Comma separated list of chords in roman numeral form: I,IV
  ```
- This will result in the predictions being output
+ This will result in the predictions being output.
  ```
 | I | IV | I | V7 | I | I | I | VIm | IIIm | IIIm | 
 | C | F | C | G7 | C | C | C | Am | Em | Em | 
  ```
- The final prompt allows the user to generate another progression from new input otherwise the program will terminate when the user inputs “stop” 
+ The final prompt allows the user to generate another progression from new input otherwise the program will terminate when the user inputs “stop”.
  ```
  Generate another? ('stop') to end:
  ```
