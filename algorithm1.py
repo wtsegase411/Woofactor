@@ -21,7 +21,7 @@ import getLines
 
 def possibleProgressions(possibleChords):
     '''
-        Calls getLines() and counts how many times each chord occures to find P(A)
+        Calls getLines() and counts how many times each chord occurs to find P(A)
 
             Parameters:
                 possibleChords (list): a list of every possible progression found in the data
