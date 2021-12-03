@@ -66,7 +66,8 @@ def possibleProgressionsLast1(possibleChords, inProg):
 
     for l in lines:
         for c in range(len(l.chords)):
-            # If the progression from inProg is there and not at the end of a line add the following element to possibleFollow
+            # If the progression from inProg is there and not at the end of a line,
+            # add the following element to possibleFollow
             if l.chords[c] == inProg and c != len(l.chords) - 1:
                 progCount[possibleChords.index(l.chords[c + 1])] += 1
 
@@ -95,7 +96,8 @@ def possibleProgressionsLast2(possibleChords, inProg1, inProg2):
 
     for l in lines:
         for c in range(len(l.chords)):
-            # If the progression from inProg is there and not at the end of a line add the following element to possibleFollow
+            # If the progression from inProg is there and not at the end of a line,
+            # add the following element to possibleFollow
             if l.chords[c] == inProg1 and c < len(l.chords) - 2 and l.chords[c + 1] == inProg2:
                 progCount[possibleChords.index(l.chords[c + 2])] += 1
 
