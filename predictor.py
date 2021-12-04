@@ -2,7 +2,6 @@ import os
 from os.path import exists
 import algorithm1
 import getLines
-import player
 import normalize
 import random
 import modelSave
@@ -147,8 +146,6 @@ def main():
 
     while cont != "stop" and cont != "Stop":
 
-        playing = input("Play music? (Y/N)")
-
         key = input("What key would you like the final out put to be in? ")
 
         while key not in ["C", "D", "E", "F", "G", "A", "B", "Cm", "Dm", "Em", "Fm", "Gm", "Am", "Bm"]:
@@ -178,18 +175,6 @@ def main():
             print(chartFormat(progsIn))
 
             print(chartFormat(romanNumeralToChord.main(progsIn, key)))
-
-            # Play each progression if the user requested
-            if playing == "Y":
-                for x in progsIn:
-                    if True in [char.isdigit() for char in x]:
-                        currentBeat = int(x[-1])
-                        x = x[:-1]
-                    else:
-                        currentBeat = defaultBeats
-
-                    for y in range(currentBeat):
-                        player.translate(x, key, bpm/60/defaultBeats)
 
             # prints the arrays of probabilities
             # print(possibleChords)
