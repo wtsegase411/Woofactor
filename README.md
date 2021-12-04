@@ -10,9 +10,7 @@ For this project, we worked on developing a tool that allows us to digitally rep
 Use the package manager [pip](https://pip.pypa.io/en/stable/) or pycharm to install the following packages.
 
 ```bash
-pip install mingus
 pip install matplotlib
-pip install fluidsynth
 ```
 
 If you are installing on a Windows machine go to the User Guide.pdf to find an additional installation step.
@@ -27,10 +25,6 @@ If this is not the first time the program has been run, the user is prompted to 
 ```
 Would you like to generate a model? (Y/N)
 ```
-The next prompt determines whether the output from the algorithm will be played aloud by the synthesizer. The default given an invalid prompt is N.
-``` 
- Play music? (Y/N) N
- ```
 The user is then given the choice of the key of the output. Any major or minor key is valid and the user will be prompted again if the input is invalid. If you want to use a minor key simply follow the key with an 'm'. E.g. "Am"
 ```
  What key would you like the final out put to be in? C
