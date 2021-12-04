@@ -5,7 +5,7 @@ from mingus.midi import fluidsynth
 
 def translate(input, key, sleeptime):
     '''
-        Playes a chord using the given chord then sleeps for sleeptime.
+        Plays a chord using the given chord then sleeps for sleeptime.
 
             Parameters:
                 input (string): A chord in roman numeral form

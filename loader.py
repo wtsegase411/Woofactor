@@ -9,7 +9,7 @@ def main():
             None
             
         Returns:
-            info (list): nested list containing each row in 'Digial Representation.csv' as a sublist
+            info (list): nested list containing each row in 'Digital Representation.csv' as a sublist
     '''
     with open('Digital Representation.csv', newline='') as file:
         reader = csv.reader(file)
