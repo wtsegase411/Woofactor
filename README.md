@@ -13,8 +13,6 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) or pycharm to inst
 pip install matplotlib
 ```
 
-If you are installing on a Windows machine go to the User Guide.pdf to find an additional installation step.
-
 ## Usage
 
 The main algorithm that the user will interface with is predictor.py. Inside of the directory or through an IDE run predictor.py. 
