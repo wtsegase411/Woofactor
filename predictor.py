@@ -146,13 +146,13 @@ def main():
 
     while cont != "stop" and cont != "Stop":
 
-        key = input("What key would you like the final out put to be in? ")
+        key = input("What key would you like the final output to be in? ")
 
         while key not in ["C", "D", "E", "F", "G", "A", "B", "Cm", "Dm", "Em", "Fm", "Gm", "Am", "Bm"]:
             key = input("Invalid key please reenter: ")
 
         # Get the user inputted list of possibleChords separated by commas
-        progsIn = input("Comma separated list of possibleChords in roman numeral form: ")
+        progsIn = input("Comma separated list of chords in roman numeral form: ")
 
         # Remove spaces and turn comma seperated string into list
         progsIn = progsIn.replace(" ", "").split(",")
